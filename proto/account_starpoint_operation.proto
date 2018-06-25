@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.kernel.grpc.proto.account.starpoint.operation";
+option java_outer_classname = "AccountStarPointOperationServiceProto";
+
+package account.starpoint.operation;
+
+import "response_entity.proto";
+
+//账户星点操作服务
+service AccountStarPointOperationService {
+    //采集
+    rpc collection(CollectionStarPointInfo) returns (CollectionResult) {}
+    //提现 - 暂时未开启
+    rpc withdraw(WithdrawInfo) returns (WithdrawResult){}
+}
+
+//采集星点信息
+message CollectionStarPointInfo {
+    string accountToken = 1; //需存储的第三方唯一token 必填
+    string token = 2; //安全校验码-必填
+    int64 collectionTime = 3; //采集时间 - 必填
+    repeated StarPointRecordsInfo records = 4;//需采集的记录token清单 - 必填
+}
+
+//星点需采集记录
+message StarPointRecordsInfo{
+    string recordToken = 1; //记录token - 必填
+}
+
+//提现信息
+message WithdrawInfo{
+    string accountToken = 1; //需存储的第三方唯一token 必填
+    string token = 2; //安全校验码-必填
+    int64 withdrawTime = 3;//提现时间  必填
+    string withdrawCount = 4; //提现数量  必填
+}
+
+//采集结果
+message CollectionResult{
+    string availableStarPoint = 1; //可用星点数
+    string frozenStarPoint = 2; //冻结星点数量
+    ResponseEntity responseEntity = 3;
+}
+
+//提现结果
+message WithdrawResult{
+    string availableStarPoint = 1; //可用星点数
+    string frozenStarPoint = 2; //冻结星点数量
+    ResponseEntity responseEntity = 3;
+}
